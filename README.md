@@ -2,6 +2,59 @@
 
 Go Micro is a framework for distributed systems development.
 
+
+## v2.9.1 extend:
+
+- [x] log, 彩色日志
+- [x] 核心功能逻辑, 补充更多 log 点. 辅助了解 go-micro 实现细节. 
+
+
+
+### 使用方式: 
+
+- 修改本 repo, 打 tag, push tag. 
+
+```bash
+# tag:
+git tag v2.9.1.3
+
+git push --tags
+
+
+```
+
+
+- 其他项目引入本项目, go.mod 修改: 
+
+
+```bash 
+
+# go mod fix:
+
+replace (
+	github.com/coreos/go-systemd => github.com/coreos/go-systemd/v22 v22.0.0
+	github.com/micro/go-micro/v2 => github.com/better-go/go-micro/v2 v2.9.2-0.20200710032755-8ca1194663bf
+	google.golang.org/grpc => google.golang.org/grpc v1.26.0
+)
+
+
+
+```
+
+- 更新本项目 tag 版本. 
+
+```bash 
+
+# update:
+go get -u github.com/better-go/go-micro/v2@v2.9.1.3
+
+#
+go mod tidy -v
+
+```
+
+
+
 ## Overview
 
 Go Micro provides the core requirements for distributed systems development including RPC and Event driven communication. 
