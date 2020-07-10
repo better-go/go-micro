@@ -694,7 +694,7 @@ func (g *grpcServer) Register() error {
 
 	if !registered {
 		if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-			logger.Infof("Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
+			logger.Infof("grpc Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
 		}
 	}
 
@@ -788,7 +788,7 @@ func (g *grpcServer) Deregister() error {
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-		logger.Infof("Deregistering node: %s", node.Id)
+		logger.Infof("grpc Deregistering node: %s", node.Id)
 	}
 	if err := config.Registry.Deregister(service); err != nil {
 		return err

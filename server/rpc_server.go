@@ -651,7 +651,7 @@ func (s *rpcServer) Register() error {
 
 	if !registered {
 		if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-			log.Infof("Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
+			log.Infof("rpc Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
 		}
 	}
 
@@ -764,7 +764,7 @@ func (s *rpcServer) Deregister() error {
 	}
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-		log.Infof("Registry [%s] Deregistering node: %s", config.Registry.String(), node.Id)
+		log.Infof("rpc Registry [%s] Deregistering node: %s", config.Registry.String(), node.Id)
 	}
 	if err := config.Registry.Deregister(service); err != nil {
 		return err
