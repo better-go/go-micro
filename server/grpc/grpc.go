@@ -701,7 +701,7 @@ func (g *grpcServer) Register() error {
 
 	if !registered {
 		if logger.V(logger.InfoLevel, logger.DefaultLogger) {
-			logger.Infof("grpc Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
+			logger.Infof("DebugX: [gRPC] ###  Registry [%s] Registering node: %s", config.Registry.String(), node.Id)
 		}
 	}
 
