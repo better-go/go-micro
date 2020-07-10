@@ -116,7 +116,9 @@ func (l *defaultLogger) Log(level Level, v ...interface{}) {
 	dlog.DefaultLog.Write(rec)
 
 	t := rec.Timestamp.Format("2006-01-02 15:04:05")
-	fmt.Printf("%s %s %v\n", t, metadata, rec.Message)
+
+	colorPrint(level, t, metadata, rec)
+	//fmt.Printf("%s %s %v\n", t, metadata, rec.Message)
 }
 
 func (l *defaultLogger) Logf(level Level, format string, v ...interface{}) {
@@ -157,7 +159,28 @@ func (l *defaultLogger) Logf(level Level, format string, v ...interface{}) {
 	dlog.DefaultLog.Write(rec)
 
 	t := rec.Timestamp.Format("2006-01-02 15:04:05")
-	fmt.Printf("%s %s %v\n", t, metadata, rec.Message)
+
+	colorPrint(level, t, metadata, rec)
+	//fmt.Printf("%s %s %v\n", t, metadata, rec.Message)
+}
+
+// color print:
+func colorPrint(l Level, ts, meta string, rec dlog.Record) {
+	// time : file : level : msg
+	switch l {
+	case TraceLevel: // yellow:
+		fmt.Printf("%c[0;20;33m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	case DebugLevel: // green:
+		fmt.Printf("%c[0;20;36m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	case InfoLevel: // orange:
+		fmt.Printf("%c[0;20;32m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	case WarnLevel: // blue:
+		fmt.Printf("%c[0;20;34m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	case ErrorLevel: // red:
+		fmt.Printf("%c[0;20;31m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	case FatalLevel: // red:
+		fmt.Printf("%c[0;20;31m%s %s\t>> %v %c[0m\n", 0x1B, ts, meta, rec.Message, 0x1B)
+	}
 }
 
 func (n *defaultLogger) Options() Options {
