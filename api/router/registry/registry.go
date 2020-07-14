@@ -426,6 +426,8 @@ func (r *registryRouter) Route(req *http.Request) (*api.Service, error) {
 
 	// get the service name
 	rp, err := r.opts.Resolver.Resolve(req)
+	logger.Infof("DebugX: [registry.Resolve] req=%+v, resp=%+v, err=%v", req, rp, err)
+
 	if err != nil {
 		return nil, err
 	}
@@ -435,6 +437,8 @@ func (r *registryRouter) Route(req *http.Request) (*api.Service, error) {
 
 	// get service
 	services, err := r.rc.GetService(name)
+	logger.Infof("DebugX: [registry.GetService] req=%+v, services=%+v, err=%v", name, services, err)
+
 	if err != nil {
 		return nil, err
 	}
@@ -451,18 +455,21 @@ func (r *registryRouter) Route(req *http.Request) (*api.Service, error) {
 		}
 
 		// construct api service
-		return &api.Service{
+		svc := &api.Service{
 			Name: name,
 			Endpoint: &api.Endpoint{
 				Name:    rp.Method,
 				Handler: handler,
 			},
 			Services: services,
-		}, nil
+		}
+		logger.Infof("DebugX: [handler.Type] type=%v, service=%+v", r.opts.Handler, svc)
+		return svc, nil
+
 	// http handler
 	case "http", "proxy", "web":
 		// construct api service
-		return &api.Service{
+		svc := &api.Service{
 			Name: name,
 			Endpoint: &api.Endpoint{
 				Name:    req.URL.String(),
@@ -472,7 +479,9 @@ func (r *registryRouter) Route(req *http.Request) (*api.Service, error) {
 				Path:    []string{req.URL.Path},
 			},
 			Services: services,
-		}, nil
+		}
+		logger.Infof("DebugX: [handler.Type] type=%v, service=%+v", r.opts.Handler, svc)
+		return svc, nil
 	}
 
 	return nil, errors.New("unknown handler")
