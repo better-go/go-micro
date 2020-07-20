@@ -29,6 +29,8 @@ type service struct {
 
 func newService(opts ...Option) Service {
 	service := new(service)
+
+	// 默认配置项: 支持 http prof:
 	options := newOptions(opts...)
 
 	// service name

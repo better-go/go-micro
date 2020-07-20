@@ -51,7 +51,7 @@ func newOptions(opts ...Option) Options {
 	opt := Options{
 		Auth:      auth.DefaultAuth,
 		Broker:    broker.DefaultBroker,
-		Cmd:       cmd.DefaultCmd,
+		Cmd:       cmd.DefaultCmd,  // 默认配置项, 支持 http prof
 		Config:    config.DefaultConfig,
 		Client:    client.DefaultClient,
 		Server:    server.DefaultServer,

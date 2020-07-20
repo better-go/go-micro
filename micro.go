@@ -4,6 +4,7 @@ package micro
 import (
 	"context"
 
+	"github.com/better-go/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/server"
 )
@@ -116,7 +117,9 @@ func RegisterHandler(s server.Server, h interface{}, opts ...server.HandlerOptio
 	return s.Handle(s.NewHandler(h, opts...))
 }
 
+// 注册异步 handler 钩子:
 // RegisterSubscriber is syntactic sugar for registering a subscriber
 func RegisterSubscriber(topic string, s server.Server, h interface{}, opts ...server.SubscriberOption) error {
+	logger.Warn("DebugX: [micro.RegisterSubscriber] topic=%v, server=%+v, h=%+v, opt=%+v", topic, s, h, opts)
 	return s.Subscribe(s.NewSubscriber(topic, h, opts...))
 }
