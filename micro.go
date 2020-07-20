@@ -4,7 +4,7 @@ package micro
 import (
 	"context"
 
-	"github.com/better-go/go-micro/v2/logger"
+	"github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/server"
 )
