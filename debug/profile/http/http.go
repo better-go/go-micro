@@ -60,6 +60,8 @@ func (h *httpProfile) String() string {
 	return "http"
 }
 
+
+// todo: http prof 支持
 func NewProfile(opts ...profile.Option) profile.Profile {
 	mux := http.NewServeMux()
 

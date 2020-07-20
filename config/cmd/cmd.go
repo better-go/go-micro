@@ -389,6 +389,7 @@ var (
 		"basic": basic.NewProvider,
 	}
 
+	// todo: 默认 http prof 支持
 	DefaultProfiles = map[string]func(...profile.Option) profile.Profile{
 		"http":  http.NewProfile,
 		"pprof": pprof.NewProfile,
@@ -415,7 +416,7 @@ func newCmd(opts ...Option) Cmd {
 		Runtime:   &runtime.DefaultRuntime,
 		Store:     &store.DefaultStore,
 		Tracer:    &trace.DefaultTracer,
-		Profile:   &profile.DefaultProfile,
+		Profile:   &profile.DefaultProfile, // todo: http prof
 		Config:    &config.DefaultConfig,
 
 		Brokers:    DefaultBrokers,
@@ -428,7 +429,7 @@ func newCmd(opts ...Option) Cmd {
 		Stores:     DefaultStores,
 		Tracers:    DefaultTracers,
 		Auths:      DefaultAuths,
-		Profiles:   DefaultProfiles,
+		Profiles:   DefaultProfiles, // todo: 默认 HTTP prof 支持端口
 		Configs:    DefaultConfigs,
 	}
 
@@ -607,6 +608,9 @@ func (c *cmd) Before(ctx *cli.Context) error {
 	if err := authutil.Generate(serverID, c.App().Name, (*c.opts.Auth)); err != nil {
 		return err
 	}
+
+
+	// todo: 打开默认 http prof 开关
 
 	// Set the profile
 	if name := ctx.String("profile"); len(name) > 0 {
