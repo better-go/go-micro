@@ -25,6 +25,7 @@ import (
 	"github.com/micro/go-micro/v2/util/socket"
 )
 
+// 默认 rpc server:
 type rpcServer struct {
 	router *router
 	exit   chan chan error
@@ -51,7 +52,7 @@ func newRpcServer(opts ...Option) Server {
 	router.hdlrWrappers = options.HdlrWrappers
 	router.subWrappers = options.SubWrappers
 
-	return &rpcServer{
+	s := &rpcServer{
 		opts:        options,
 		router:      router,
 		handlers:    make(map[string]Handler),
@@ -59,6 +60,9 @@ func newRpcServer(opts ...Option) Server {
 		exit:        make(chan chan error),
 		wg:          wait(options.Context),
 	}
+
+	logger.Warnf("DebugX: new default rpc server: %+v", s)
+	return s
 }
 
 // HandleEvent handles inbound messages to the service directly
@@ -509,6 +513,8 @@ func (s *rpcServer) Subscribe(sb Subscriber) error {
 	}
 
 	s.subscribers[sb] = nil
+
+	logger.Warnf("DebugX: default rpc server subscribers: %+v", s.subscribers)
 	return nil
 }
 
@@ -836,6 +842,8 @@ func (s *rpcServer) Start() error {
 		return err
 	}
 
+	logger.Warn("DebugX: rpcServer.Start: broker auto connect")
+
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
 		log.Infof("Broker [%s] Connected to %s", bname, config.Broker.Address())
 	}
@@ -967,6 +975,8 @@ func (s *rpcServer) Start() error {
 				log.Errorf("Broker [%s] Disconnect error: %v", bname, err)
 			}
 		}
+
+		logger.Warnf("DebugX: rpcServer.Start(): broker auto disconnect.")
 
 		// swap back address
 		s.Lock()

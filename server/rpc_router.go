@@ -18,6 +18,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/better-go/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/codec"
 	merrors "github.com/micro/go-micro/v2/errors"
 )
@@ -477,7 +478,9 @@ func (router *router) ServeRequest(ctx context.Context, r Request, rsp Response)
 }
 
 func (router *router) NewSubscriber(topic string, handler interface{}, opts ...SubscriberOption) Subscriber {
-	return newSubscriber(topic, handler, opts...)
+	sub := newSubscriber(topic, handler, opts...)
+	logger.Warnf("DebugX: [micro.router.NewSubscriber] sub=%+v", sub)
+	return sub
 }
 
 func (router *router) Subscribe(s Subscriber) error {

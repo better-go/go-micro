@@ -199,12 +199,15 @@ func Handle(h Handler) error {
 // Subscribe registers a subscriber interface with the default server
 // which subscribes to specified topic with the broker
 func Subscribe(s Subscriber) error {
+	logger.Warnf("DebugX: register a subscriber: %+v", s)
 	return DefaultServer.Subscribe(s)
 }
 
 // Run starts the default server and waits for a kill
 // signal before exiting. Also registers/deregisters the server
 func Run() error {
+	logger.Warnf("DebugX: default server auto start.")
+
 	if err := Start(); err != nil {
 		return err
 	}
@@ -215,6 +218,7 @@ func Run() error {
 	if logger.V(logger.InfoLevel, log) {
 		log.Infof("Received signal %s", <-ch)
 	}
+
 	return Stop()
 }
 
@@ -232,6 +236,9 @@ func Stop() error {
 	if logger.V(logger.InfoLevel, log) {
 		log.Infof("Stopping server")
 	}
+
+	logger.Warnf("DebugX: default server auto stop")
+
 	return DefaultServer.Stop()
 }
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/better-go/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/registry"
 )
 
@@ -28,6 +29,8 @@ type subscriber struct {
 }
 
 func newSubscriber(topic string, sub interface{}, opts ...SubscriberOption) Subscriber {
+	logger.Warn("DebugX: [micro.newSubscriber] entry, topic=%v, sub=%+v, opts=%+v", topic, sub, opts)
+
 	options := SubscriberOptions{
 		AutoAck: true,
 	}
@@ -39,6 +42,9 @@ func newSubscriber(topic string, sub interface{}, opts ...SubscriberOption) Subs
 	var endpoints []*registry.Endpoint
 	var handlers []*handler
 
+	//
+	// TODO: 反射用法示例:
+	//
 	if typ := reflect.TypeOf(sub); typ.Kind() == reflect.Func {
 		h := &handler{
 			method: reflect.ValueOf(sub),
@@ -62,6 +68,9 @@ func newSubscriber(topic string, sub interface{}, opts ...SubscriberOption) Subs
 				"subscriber": "true",
 			},
 		})
+
+		logger.Warnf("DebugX: [micro.newSubscriber] type=func, handlers=%+v, endpoints=%+v", handlers, endpoints)
+
 	} else {
 		hdlr := reflect.ValueOf(sub)
 		name := reflect.Indirect(hdlr).Type().Name()
@@ -91,6 +100,8 @@ func newSubscriber(topic string, sub interface{}, opts ...SubscriberOption) Subs
 				},
 			})
 		}
+
+		logger.Warnf("DebugX: [micro.newSubscriber] type!=func, handlers=%+v, endpoints=%+v", handlers, endpoints)
 	}
 
 	return &subscriber{
