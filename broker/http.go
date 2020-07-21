@@ -20,6 +20,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/micro/go-micro/v2/codec/json"
 	merr "github.com/micro/go-micro/v2/errors"
+	"github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/cache"
 	maddr "github.com/micro/go-micro/v2/util/addr"
@@ -353,6 +354,7 @@ func (h *httpBroker) Address() string {
 	return h.address
 }
 
+// TODO: broker 连接时机??
 func (h *httpBroker) Connect() error {
 	h.RLock()
 	if h.running {
@@ -707,5 +709,7 @@ func (h *httpBroker) String() string {
 
 // NewBroker returns a new http broker
 func NewBroker(opts ...Option) Broker {
+	// 默认 broker
+	logger.Warn("DebugX: [broker.http.NewBroker] default new http broker, opts=%+v", opts)
 	return newHttpBroker(opts...)
 }

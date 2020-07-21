@@ -31,7 +31,7 @@ type rpcServer struct {
 	exit   chan chan error
 
 	sync.RWMutex
-	opts        Options
+	opts        Options // TODO: 全局配置项, 获取 broker
 	handlers    map[string]Handler
 	subscribers map[Subscriber][]broker.Subscriber
 	// marks the serve as started
@@ -53,7 +53,7 @@ func newRpcServer(opts ...Option) Server {
 	router.subWrappers = options.SubWrappers
 
 	s := &rpcServer{
-		opts:        options,
+		opts:        options, // TODO: 初始化过程
 		router:      router,
 		handlers:    make(map[string]Handler),
 		subscribers: make(map[Subscriber][]broker.Subscriber),
@@ -815,6 +815,7 @@ func (s *rpcServer) Start() error {
 	s.RUnlock()
 
 	config := s.Options()
+	logger.Warnf("DebugX: [rpc_server.Start] server.Option =%+v", config)
 
 	// start listening on the transport
 	ts, err := config.Transport.Listen(config.Address)
@@ -834,15 +835,21 @@ func (s *rpcServer) Start() error {
 
 	bname := config.Broker.String()
 
+	//
+	// TODO: 连接 broker
+	//
+	logger.Warn("DebugX: rpcServer.Start: broker before connect")
+
 	// connect to the broker
 	if err := config.Broker.Connect(); err != nil {
+		logger.Errorf("DebugX: rpcServer.broker [%v] connect error: %v", bname, err)
 		if logger.V(logger.ErrorLevel, logger.DefaultLogger) {
 			log.Errorf("Broker [%s] connect error: %v", bname, err)
 		}
 		return err
 	}
 
-	logger.Warn("DebugX: rpcServer.Start: broker auto connect")
+	logger.Warn("DebugX: rpcServer.Start: broker after connect")
 
 	if logger.V(logger.InfoLevel, logger.DefaultLogger) {
 		log.Infof("Broker [%s] Connected to %s", bname, config.Broker.Address())

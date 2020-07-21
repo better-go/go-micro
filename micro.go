@@ -4,8 +4,8 @@ package micro
 import (
 	"context"
 
-	"github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/server"
 )
 
@@ -80,7 +80,9 @@ var (
 
 // NewService creates and returns a new Service based on the packages within.
 func NewService(opts ...Option) Service {
-	return newService(opts...)
+	s := newService(opts...)
+	logger.Warnf("DebugX: [micro.NewService] service=%+v", s)
+	return s
 }
 
 // FromContext retrieves a Service from the Context.

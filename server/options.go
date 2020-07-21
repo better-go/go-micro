@@ -65,7 +65,7 @@ func newOptions(opt ...Option) Options {
 	}
 
 	if opts.Broker == nil {
-		opts.Broker = broker.DefaultBroker
+		opts.Broker = broker.DefaultBroker // TODO: 默认 broker
 	}
 
 	if opts.Registry == nil {

@@ -56,6 +56,7 @@ func newService(opts ...Option) Service {
 	// set opts
 	service.opts = options
 
+	logger.Warnf("DebugX: [service.newService] default service = %+v", service)
 	return service
 }
 
@@ -141,9 +142,13 @@ func (s *service) Start() error {
 		}
 	}
 
+	logger.Warnf("DebugX: before start, register before.start.hooks")
+
 	if err := s.opts.Server.Start(); err != nil {
 		return err
 	}
+
+	logger.Warnf("DebugX: after start, register after.start.hooks")
 
 	for _, fn := range s.opts.AfterStart {
 		if err := fn(); err != nil {
@@ -177,6 +182,8 @@ func (s *service) Stop() error {
 }
 
 func (s *service) Run() error {
+	logger.Warnf("DebugX: [service.Run()] : global entry...")
+
 	// register the debug handler
 	s.opts.Server.Handle(
 		s.opts.Server.NewHandler(
@@ -202,10 +209,16 @@ func (s *service) Run() error {
 		logger.Infof("Starting [service] %s", s.Name())
 	}
 
+	logger.Warnf("DebugX: [service.Run()] global entry: before start...")
+
+	//
+	// TODO: 启动服务器
+	//
 	if err := s.Start(); err != nil {
 		return err
 	}
 
+	// TODO: 注册+监听系统退出信号, graceful shutdown
 	ch := make(chan os.Signal, 1)
 	if s.opts.Signal {
 		signal.Notify(ch, signalutil.Shutdown()...)
@@ -217,6 +230,8 @@ func (s *service) Run() error {
 	// wait on context cancel
 	case <-s.opts.Context.Done():
 	}
+
+	logger.Warnf("DebugX: [service.Run()] : before stop...")
 
 	return s.Stop()
 }

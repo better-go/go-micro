@@ -13,6 +13,7 @@ import (
 	"github.com/micro/go-micro/v2/config/cmd"
 	"github.com/micro/go-micro/v2/debug/profile"
 	"github.com/micro/go-micro/v2/debug/trace"
+	"github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/runtime"
 	"github.com/micro/go-micro/v2/server"
@@ -51,7 +52,7 @@ func newOptions(opts ...Option) Options {
 	opt := Options{
 		Auth:      auth.DefaultAuth,
 		Broker:    broker.DefaultBroker,
-		Cmd:       cmd.DefaultCmd,  // 默认配置项, 支持 http prof
+		Cmd:       cmd.DefaultCmd, // 默认配置项, 支持 http prof
 		Config:    config.DefaultConfig,
 		Client:    client.DefaultClient,
 		Server:    server.DefaultServer,
@@ -67,6 +68,7 @@ func newOptions(opts ...Option) Options {
 		o(&opt)
 	}
 
+	logger.Warn("DebugX: [micro.newOptions] opt=%+v", opt)
 	return opt
 }
 
